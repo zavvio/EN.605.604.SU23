@@ -1,12 +1,12 @@
 ﻿// EN.605.604.SU23_Assignment1.cpp : Defines the entry point for the application.
 //
 
-#include "EN.605.604.SU23_Assignment1.h"
+#include <iostream>
 
 using namespace std;
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	cout << "Hello Assignment 1." << endl;
 	return 0;
 }

@@ -13,3 +13,9 @@ project ("EN.605.604.SU23")
 
 # Include sub-projects.
 add_subdirectory ("EN.605.604.SU23_Assignment1")
+add_subdirectory ("EN.605.604.SU23_Assignment2")
+add_subdirectory ("EN.605.604.SU23_Assignment3")
+add_subdirectory ("EN.605.604.SU23_Assignment4")
+add_subdirectory ("EN.605.604.SU23_Assignment5")
+add_subdirectory ("EN.605.604.SU23_Project1")
+add_subdirectory ("EN.605.604.SU23_Project2")
