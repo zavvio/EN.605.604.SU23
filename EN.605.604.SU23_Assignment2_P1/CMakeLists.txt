@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (EN.605.604.SU23_Assignment2 "EN.605.604.SU23_Assignment2.cpp")
+add_executable (EN.605.604.SU23_Assignment2 "EN.605.604.SU23_Assignment2_P1.cpp" "EN.605.604.SU23_Assignment2_P2.cpp" "MyArray.cpp" "MyArray.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET EN.605.604.SU23_Assignment2 PROPERTY CXX_STANDARD 20)
