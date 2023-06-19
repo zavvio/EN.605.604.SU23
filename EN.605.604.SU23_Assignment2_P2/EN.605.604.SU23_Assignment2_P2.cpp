@@ -1,12 +1,15 @@
 ﻿// EN.605.604.SU23_Assignment2_P2.cpp : Defines the entry point for the application.
 
-#include <iostream>
+#include "UserInterface.h"
 
 using namespace std;
 
 int main()
 {
-	cout << "Hello Assignment 2." << endl;
+	Counter c;
+	Memory m;
+	UserInterface anInterface { c, m };
+	anInterface.executeSelection();
 	
 	return 0;
 }

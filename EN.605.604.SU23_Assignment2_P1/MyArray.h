@@ -11,8 +11,8 @@ public:
     bool getDataByIndex(const int index, int& value);
     bool setDataByIndex(const int index, const int value);
     int getSize() const;
-    bool createData(const int size);
-    void deleteData();
+    bool createData(const int size); // Public to allow late creation
+    void deleteData(); // Public to allow clean and re-creation
     void displayData();
 
 private:

@@ -14,6 +14,9 @@ MyArray::MyArray(int sz)
     }
 }
 
+// Copy constructor perform deep copy on dynamically allocated data array.
+// Source MyArray only provides interface to retrieve data by index,
+// thus ensure encapsulation and data hiding without returning raw pointer.
 MyArray::MyArray(MyArray& array)
 {
     std::cout << "MyClass copy constructor is called." << std::endl;
@@ -40,6 +43,7 @@ MyArray::~MyArray()
     deleteData();
 }
 
+// Only return one data element to prevent direct manipulation on array.
 bool MyArray::getDataByIndex(const int index, int& value)
 {
     std::cout << "Getting data at index " << index << std::endl;
@@ -69,6 +73,8 @@ int MyArray::getSize() const
     return size;
 }
 
+// This is a public function to allow allocating memory later in case MyArray
+// was given an invalid array size during object instantiation.
 bool MyArray::createData(const int size)
 {
     if (size <= 0)
@@ -87,6 +93,7 @@ bool MyArray::createData(const int size)
     }
 }
 
+// This is a public function to provide capability of array re-creation
 void MyArray::deleteData()
 {
     std::cout << "Deleting data." << std::endl;
@@ -103,10 +110,3 @@ void MyArray::displayData()
     }
     std::cout << std::endl;
 }
-
-
-
-
-//============================================================
-//                     PRIVATE FUNCTIONS                     =
-//============================================================
