@@ -7,6 +7,7 @@ DispensingColumnStorage::~DispensingColumnStorage()
 #endif
 }
 
+// This is not a fixed value, it is dynamically retrieved from the first available drink.
 std::string DispensingColumnStorage::getDrinkName() const
 {
     if (isEmpty())
@@ -16,7 +17,12 @@ std::string DispensingColumnStorage::getDrinkName() const
     return drinks[0]->getName();
 }
 
+// This is not a fixed value, it is dynamically retrieved from the first available drink.
 double DispensingColumnStorage::getDrinkPrice() const
 {
+    if (isEmpty())
+    {
+        return 0.0;
+    }
     return drinks[0]->getPrice();
 }

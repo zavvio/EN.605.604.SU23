@@ -19,6 +19,7 @@ MoneyStorage::~MoneyStorage()
 #endif
 }
 
+// Count the total money value from all the currencies combined.
 double MoneyStorage::getTotalValue(std::map<MoneyType, unsigned>* money)
 {
     if (money == nullptr)
@@ -33,16 +34,19 @@ double MoneyStorage::getTotalValue(std::map<MoneyType, unsigned>* money)
     return total;
 }
 
-//unsigned MoneyStorage::getCount(MoneyType type) const
-//{
-//    return moneyCount.at(type);
-//}
+// Retrive count of a specific money type.
+unsigned MoneyStorage::getCount(MoneyType type) const
+{
+    return moneyCount.at(type);
+}
 
+// Add a specific type of money to the storage.
 void MoneyStorage::insertMoney(MoneyType type, unsigned count)
 {
     moneyCount.at(type) += count;
 }
 
+// Add a stash of currencies to the storage.
 void MoneyStorage::insertMoney(std::map<MoneyType, unsigned> money)
 {
     for (const MoneyType& type : moneyType)
@@ -51,6 +55,8 @@ void MoneyStorage::insertMoney(std::map<MoneyType, unsigned> money)
     }
 }
 
+// Dispense a specific money type; only dispense if storage has sufficient currencies.
+// Return value indicates how many counts of such money type is dispensed rather than its money value.
 unsigned MoneyStorage::dispenseMoney(MoneyType type, unsigned count)
 {
     if (moneyCount.at(type) >= count)
@@ -61,8 +67,16 @@ unsigned MoneyStorage::dispenseMoney(MoneyType type, unsigned count)
     return 0;
 }
 
+// Dispense a stash of currencies as close to the requested amount as possible.
+// Note that it prioritizes dispensing the largest money type first;
+// for example, a single twenty dollar bill would be dispensed instead of 20 one dollar bills.
+// It dispenses only what's available from the storage;
+// smaller money type for the same money value will be dispensed if not enough larger money type is available.
+// If there is not enough currency overall, it simply dispenses all it has.
+// Note: calculation is done with unsigned variable type to avoid rounding issue of floating point numbers.
 std::map<MoneyType, unsigned> MoneyStorage::dispenseMoney(double amount)
 {
+    // e.g. $37.849999 is represented as 3785
     unsigned count, amount_100bp_int = (unsigned) std::round(amount * 100);
     using enum MoneyType;
     std::map<MoneyType, unsigned> dispenseCount;
@@ -70,20 +84,24 @@ std::map<MoneyType, unsigned> MoneyStorage::dispenseMoney(double amount)
     for (int i = static_cast<int>(MoneyType::INVALID) - 1; i >= 0; i--)
     {
         count = amount_100bp_int / mapMoneyTypeToUnsignedValue(moneyType[i]);
+        // only dispense what's available from storage.
         count = std::min(count, moneyCount.at(moneyType[i]));
-        moneyCount.at(moneyType[i]) -= count;
-        dispenseCount[moneyType[i]] = count;
+        moneyCount.at(moneyType[i]) -= count; // take it away from storage.
+        dispenseCount[moneyType[i]] = count; // put it into dispensing stash.
+        // update remaining value after the current money type is dispensed.
         amount_100bp_int -= mapMoneyTypeToUnsignedValue(moneyType[i]) * count;
     }
 
-    //showMoneyCount();
+    showMoneyCount();
     return dispenseCount;
 }
 
 //============================================================
-//                     PRIVATE FUNCTIONS                     =
+//                    PROTECTED FUNCTIONS                    =
 //============================================================
 
+// Map each money type to it money value, at 100 base-point resolution.
+// e.g. a Quarter worth $0.25 is represented as 25
 unsigned MoneyStorage::mapMoneyTypeToUnsignedValue(MoneyType type) const
 {
     switch (type)
@@ -107,6 +125,11 @@ unsigned MoneyStorage::mapMoneyTypeToUnsignedValue(MoneyType type) const
     }
 }
 
+//============================================================
+//                     PRIVATE FUNCTIONS                     =
+//============================================================
+
+// Print out all money type and their counts currently in storage.
 void MoneyStorage::showMoneyCount(std::map<MoneyType, unsigned>* money)
 {
 #ifdef DEBUG_TRACE

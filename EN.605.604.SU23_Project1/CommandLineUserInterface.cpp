@@ -5,6 +5,7 @@ using namespace std;
 //                      PUBLIC FUNCTIONS                     =
 //============================================================
 
+// A one-time prompt is presented during start-up to help set up the vending machine.
 CommandLineUserInterface::CommandLineUserInterface(VendingMachine& machine) : aMachine{ machine }
 {
     // Interactive prompt to set up the vending machine during CLI initialization.
@@ -95,11 +96,13 @@ CommandLineUserInterface::CommandLineUserInterface(VendingMachine& machine) : aM
     cout << "Vending machine and CLI are initialized succesfully." << endl;
 }
 
+// A continuous loop to manipulate the vending machine until user seeks to terminate.
 void CommandLineUserInterface::execute()
 {
     std::unique_ptr<Drink> drink;
     std::map<MoneyType, unsigned> refund;
     double balance;
+    // Loop until the terminate option is chosen.
     while (menuChoice != (mainMenuChoices.size() - 1))
     {
         displayMainMenu();
@@ -146,7 +149,7 @@ void CommandLineUserInterface::execute()
             refund = aMachine.getRefund();
             displayRefund(refund);
             break;
-        case 6:
+        case 6: // 6 - terminate
             cout << "Program Ending." << endl;
             break;
         default:
@@ -159,6 +162,7 @@ void CommandLineUserInterface::execute()
 //                     PRIVATE FUNCTIONS                     =
 //============================================================
 
+// Main menu for overall functionalities of the vending machine.
 void CommandLineUserInterface::displayMainMenu() const
 {
     double balance = aMachine.getInsertedMoney();
@@ -169,6 +173,7 @@ void CommandLineUserInterface::displayMainMenu() const
     }
 }
 
+// Money menu has specific functionalities w.r.t. the coin/bill slot.
 void CommandLineUserInterface::displayMoneyMenu() const
 {
     double balance = aMachine.getInsertedMoney();
@@ -179,6 +184,7 @@ void CommandLineUserInterface::displayMoneyMenu() const
     }
 }
 
+// Dispensing column menu shows basic info from each column and presents the corresponding dispensing button.
 void CommandLineUserInterface::displayColumnMenu() const
 {
     std::string name;
@@ -201,6 +207,7 @@ void CommandLineUserInterface::displayColumnMenu() const
     }
 }
 
+// Parse the stash of refunded money currencies for presentation.
 void CommandLineUserInterface::displayRefund(std::map<MoneyType, unsigned> refund) const
 {
     double total = 0.0;
@@ -251,8 +258,7 @@ void CommandLineUserInterface::displayRefund(std::map<MoneyType, unsigned> refun
     cout << "Total refund: $" << std::fixed << std::setprecision(2) << total << endl;
 }
 
-// Assumption: User will input an expected valid integer as option.
-// No advanced parsing is done here for brevity.
+// Accept integer based user input for an intended action.
 void CommandLineUserInterface::getUserMenuInput(size_t maxOption)
 {
     do
@@ -267,6 +273,7 @@ void CommandLineUserInterface::getUserMenuInput(size_t maxOption)
     } while (menuChoice < 1 || menuChoice > maxOption);
 }
 
+// Insert the appropriate money currency into the vending machine as requested.
 void CommandLineUserInterface::processMoneyMenuInput()
 {
     switch (menuChoice)
@@ -298,6 +305,7 @@ void CommandLineUserInterface::processMoneyMenuInput()
     menuChoice = 0;
 }
 
+// Acknowledge the dispensing column button press action.
 void CommandLineUserInterface::processColumnMenuInput()
 {
     aMachine.pressColumnButton(menuChoice - 1);

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+// A Command-Line-Interface (CLI) is one of many types of user interface available for
+// the user to interact with the vending machine; it controls input and output among the two parties.
 class CommandLineUserInterface
 {
 public:
