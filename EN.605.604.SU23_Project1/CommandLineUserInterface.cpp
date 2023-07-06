@@ -10,6 +10,7 @@ CommandLineUserInterface::CommandLineUserInterface(VendingMachine& machine) : aM
 {
     // Interactive prompt to set up the vending machine during CLI initialization.
     unsigned option = 0;
+    cout << fixed << setprecision(2);
     cout << "Welcome to the Vending Machine Command Line User Interface." << endl;
     do
     {
@@ -202,7 +203,7 @@ void CommandLineUserInterface::displayColumnMenu() const
         }
         else
         {
-            cout << "\t" << i + 1 << " - column " << i + 1 << ", " << name << " (" << price << ")" << endl;
+            cout << "\t" << i + 1 << " - column " << i + 1 << ", ($" << price << ") " << name << endl;
         }
     }
 }
