@@ -78,7 +78,6 @@ std::map<MoneyType, unsigned> MoneyStorage::dispenseMoney(double amount)
 {
     // e.g. $37.849999 is represented as 3785
     unsigned count, amount_100bp_int = (unsigned) std::round(amount * 100);
-    using enum MoneyType;
     std::map<MoneyType, unsigned> dispenseCount;
 
     for (int i = static_cast<int>(MoneyType::INVALID) - 1; i >= 0; i--)

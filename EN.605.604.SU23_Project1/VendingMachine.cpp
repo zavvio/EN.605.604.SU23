@@ -24,16 +24,10 @@ void VendingMachine::initialize(const unsigned maxCount, const std::vector<LineI
         button_column_pairings.push_back(std::make_pair(i, i));
 
         // Fill the dispensing column with drinks
-        /*std::unique_ptr<Drink> newDrink;
-        for (unsigned j = 0; j < configs[i].count; j++)
-        {
-            newDrink = std::make_unique<Drink>(configs[i].name, configs[i].price);
-            dispensingColumns[i]->insert(newDrink);
-        }*/
         refill(i, configs[i]);
     }
 
-    deliverySlot = std::make_unique<DrinkStorage>(maxCount * configs.size());
+    deliverySlot = std::make_unique<DrinkStorage>(maxCount * (unsigned) configs.size());
 
     initialized = true;
 }
