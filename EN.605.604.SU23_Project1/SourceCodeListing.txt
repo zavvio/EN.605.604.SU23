@@ -1,0 +1,22 @@
+EN.605.604.SU23 Project 1 Source Code Listing
+- by Zavvio Mok
+
+########## Source code and header file ##########
+EN.605.604.SU23_Project1.cpp    - main program which constructs then hands over control to user interface and vending machine.
+DevUtil.h                       - header file to control debug message for development purpose, like monitor object destruction.
+Drink.h/cpp                     - represent a soft drink, could simply be renamed/generalized to Merchandise.
+DrinkStorage.h/cpp              - container class for drink objects. [Delivery slot]
+DispensingColumnStorage.h/cpp   - container class for drink objects, with transaction oriented functionalities. [Dispensing column]
+SelectionButton.h/cpp           - represents a button that can signal for various requests. [Selection button]
+MoneyStorage.h/cpp              - container class for money/currency. [Change return slot]
+MainMoneyStorage.h/cpp          - container class for money/currency, with temporary balance tracking capability. [Coin/bill slot]
+VendingMachine.h/cpp            - main container class to hold all relevant components for a typical vending machine.
+CommandLineUserInterface.h/cpp  - one type of user interface to interact with a vending machine.
+
+########## Supplemental file ##########
+Project1.mdj                    - raw class diagram.
+Project1_Class_Diagram.jpg      - class diagram screenshot.
+Screenshot - Output Run 1.1.jpg - screenshot from console output during first program run, part a.
+Screenshot - Output Run 1.2.jpg - screenshot from console output during first program run, part b.
+Screenshot - Output Run 2.1.jpg - screenshot from console output during second program run, part a.
+Screenshot - Output Run 2.2.jpg - screenshot from console output during second program run, part b.
