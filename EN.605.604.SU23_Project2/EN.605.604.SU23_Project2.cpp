@@ -3,118 +3,64 @@
 //#include <cmath>
 //#include <cstdlib>
 #include <ctime>
-#include <iostream>
-#include <iomanip>
-#include <chrono>
+#include <numeric>
 #include <queue>
-#include <random>
 #include <vector>
-#include "Passenger.h"
+#include "DevUtil.h"
+//#include "Passenger.h"
+//#include "PassengerCheckPointListener.h"
+//#include "RandomEventTimeGenerator.h"
+//#include "SimulatedTimePublisher.h"
+#include "AirportSecuritySystemSimulator.h"
 
 using namespace std;
 
-const double LAMBDA_PASSENGER_ARRIVAL   = 1.0 / 40.0;
-const double LAMBDA_CREDENTIAL_STATION  = 1.0 / 30.0;
-const double LAMBDA_SCANNING_STATION    = 1.0 / 150.0;
+//vector<double> generateEvents(double rateParameter, double duration)
+//{
+//    double currTime = 0.0;
+//    
+//}
 
-const double SECONDS_PER_DAY { 60.0 * 60 * 24 };
-const double SECOND_IN_DAY_TO_LOCK_QUEUE { 60.0 * 60 * 20 };
-
-
-
-vector<double> generateEvents(double rateParameter, double duration)
+#ifdef UNIT_TEST
+void testTimer()
 {
-    double currTime = 0.0;
-    
+    cout << endl << "[Unittest] Timer ==============================" << endl;
+    Timer timer;
+    cout << "Current time = " << timer.getCurrentTime() << endl;
+    timer.incrementTime();
+    timer.incrementTime();
+    timer.incrementTime();
+    cout << "Current time = " << timer.getCurrentTime() << endl;
+    timer.incrementTime(123.456);
+    cout << "Current time = " << timer.getCurrentTime() << endl;
 }
 
-class RandomEventTimeGenerator
+void testPassenger()
 {
-public:
-    RandomEventTimeGenerator() = delete;
-    RandomEventTimeGenerator(double lambda) :
-        lambda{ lambda },
-        distribution{ lambda },
-        seed{ (unsigned)std::chrono::high_resolution_clock::now().time_since_epoch().count() }
+    cout << endl << "[Unittest] Passenger ==============================" << endl;
+    double times[7]{ 1.5, 2.7, 4.367, 10.421, 15.856, 1.23, -2.46 };
+    Passenger p1;
+    cout << "getQueue1Time = " << p1.getQueue1Time() << endl;
+    cout << "getStation1Time = " << p1.getStation1Time() << endl;
+    cout << "getQueue2Time = " << p1.getQueue2Time() << endl;
+    cout << "getStation2Time = " << p1.getStation2Time() << endl;
+    cout << "Times = ";
+    for (double& time : times)
     {
-        generator.seed(seed);
-        
-        // C Style - seed random number generator
-        srand((unsigned) time(NULL));
+        p1.logTime(time);
+        cout << time << " ";
     }
-
-    double getNextEventTime()
-    {
-        return distribution(generator);;
-    }
-
-    double getAverageNextEventTime(unsigned occurence = 1000000)
-    {
-        double nextEventTime, totalTime = 0.0;
-        for (unsigned i = 0; i < occurence; i++)
-        {
-            nextEventTime = distribution(generator);
-            totalTime += nextEventTime;
-            //cout << nextEventTime << endl;
-        }
-        cout << "Average next event time = " << totalTime / occurence << endl;
-        return totalTime / occurence;
-    }
-    
-    double getNextEventTime_cStyle()
-    {
-        double randomValue, nextTime;
-        randomValue = (double) rand() / ((double) RAND_MAX + 1); // avoiding 0 because log(0) is undefined.
-        nextTime = -logf(1.0 - randomValue) / lambda;
-        return nextTime;
-    }
-
-    double getAverageNextEventTime_cStyle(unsigned occurence = 1000000)
-    {
-        double nextTime, totalTime = 0.0;
-        for (unsigned i = 0; i < occurence; i++)
-        {
-            nextTime = getNextEventTime_cStyle();
-            totalTime += nextTime;
-        }
-        cout << "Average next event time = " << totalTime / occurence << endl;
-        return totalTime / occurence;
-    }
-
-private:
-    std::default_random_engine generator;
-    unsigned seed;
-    double lambda;
-    std::exponential_distribution<double> distribution;
-};
-
-class CheckPoint
-{
-public:
-    void average()
-    {
-        vector<float> v;
-        float average = accumulate( v.begin(), v.end(), 0.0) / v.size();
-    }
-private:
-    queue<Passenger> passengers;
+    cout << endl;
+    cout << "getQueue1Time = " << p1.getQueue1Time() << endl;
+    cout << "getStation1Time = " << p1.getStation1Time() << endl;
+    cout << "getQueue2Time = " << p1.getQueue2Time() << endl;
+    cout << "getStation2Time = " << p1.getStation2Time() << endl;
 }
 
-int main()
+void testRandomEventTimeGenerator()
 {
-    cout << fixed << setprecision(2);
-	cout << "Hello Project 2." << endl;
-    // Passenger class.
-//    Passenger p1;
-//    cout << p1.getStartTime() << endl;
-//    p1.setStartTime(1234);
-//    cout << p1.getStartTime() << endl;
-//    nextTime(1.0/40.0000);
-//    cout << "Average time till next [passenger arrival]  event (over 10000 occurences) = " << getAverageNextEventTime(LAMBDA_PASSENGER_ARRIVAL, 10000)  << "  seconds." << endl;
-//    cout << "Average time till next [credential station] event (over 10000 occurences) = " << getAverageNextEventTime(LAMBDA_CREDENTIAL_STATION, 10000) << "  seconds." << endl;
-//    cout << "Average time till next [scanning station]   event (over 10000 occurences) = " << getAverageNextEventTime(LAMBDA_SCANNING_STATION, 10000)   << " seconds." << endl;
-    //test(LAMBDA_PASSENGER_ARRIVAL);
-    
+    cout << endl << "[Unittest] RandomEventTimeGenerator ==============================" << endl;
+#ifdef EXPERIMENTAL
     RandomEventTimeGenerator passengerArrivalTimeGenerator{ LAMBDA_PASSENGER_ARRIVAL };
     passengerArrivalTimeGenerator.getAverageNextEventTime();
     passengerArrivalTimeGenerator.getAverageNextEventTime_cStyle();
@@ -124,5 +70,33 @@ int main()
     RandomEventTimeGenerator scanningTimeGenerator{ LAMBDA_SCANNING_STATION };
     scanningTimeGenerator.getAverageNextEventTime();
     scanningTimeGenerator.getAverageNextEventTime_cStyle();
-	return 0;
+#endif
+}
+#endif
+
+//class CheckPoint
+//{
+//public:
+//    void average()
+//    {
+//        vector<double> v;
+//        double average = accumulate(v.begin(), v.end(), 0.0) / v.size();
+//    }
+//private:
+//    queue<Passenger> passengers;
+//};
+
+int main()
+{
+    cout << fixed << setprecision(2);
+	cout << "Hello Project 2." << endl;
+
+    AirportSecuritySystemSimulator simulation(5);
+    simulation.run();
+    
+#ifdef UNIT_TEST
+    testTimer();
+    testPassenger();
+    testRandomEventTimeGenerator();
+#endif
 }
