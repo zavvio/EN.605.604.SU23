@@ -1,4 +1,4 @@
-﻿// EN.605.604.SU23_Assignment2_P1.cpp : Defines the entry point for the application.
+﻿// EN.605.604.SU23_Assignment2_P1.cpp
 
 #include <iostream>
 #include "MyArray.h"

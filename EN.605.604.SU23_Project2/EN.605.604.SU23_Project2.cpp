@@ -1,4 +1,4 @@
-// EN.605.604.SU23_Project2.cpp : Defines the entry point for the application.
+// EN.605.604.SU23_Project2.cpp
 
 //#include <cmath>
 //#include <cstdlib>
@@ -89,7 +89,7 @@ void testRandomEventTimeGenerator()
 int main()
 {
     cout << fixed << setprecision(2);
-	cout << "Hello Project 2." << endl;
+	cout << "Project 2." << endl;
 
     AirportSecuritySystemSimulator simulation(5);
     simulation.run();

@@ -1,4 +1,4 @@
-﻿// EN.605.604.SU23_Assignment3.cpp : Defines the entry point for the application.
+﻿// EN.605.604.SU23_Assignment3.cpp
 
 #include "Array.h"
 

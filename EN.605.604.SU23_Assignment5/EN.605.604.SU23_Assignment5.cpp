@@ -1,4 +1,4 @@
-﻿// EN.605.604.SU23_Assignment5.cpp : Defines the entry point for the application.
+﻿// EN.605.604.SU23_Assignment5.cpp
 
 #include <iostream>
 
@@ -6,6 +6,6 @@ using namespace std;
 
 int main()
 {
-	cout << "Hello Assignment 5." << endl;
+	cout << "Assignment 5." << endl;
 	return 0;
 }

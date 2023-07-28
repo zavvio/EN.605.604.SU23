@@ -1,13 +1,36 @@
-﻿// EN.605.604.SU23_Assignment4_P1.cpp : Defines the entry point for the application.
+﻿// EN.605.604.SU23_Assignment4_P1.cpp
 
-#include <sstream>
-#include <vector>
-#include "DevUtil.h"
+#include <list>
 #include "Movie.h"
 
 using namespace std;
 
-void input_stage(vector<Movie>& movies)
+void input_stage(list<Movie>& movies);
+void reorder_stage(list<Movie>& movies);
+
+int main()
+{
+    cout << "Assignment 4 P1 - Movie Ranking" << endl;
+    cout << "[User is expected to provide proper inputs, explicit input check is out of scope.]" << endl;
+
+    list<Movie> movies
+    { // Provide some predefined movies to save some typing.
+        { "Star Wars Episode IV - A New Hope", 1977 },
+        { "The Terminator", 1984 },
+        { "Jurassic Park", 1993 },
+        { "Titanic", 1997 },
+        { "The Matrix", 1999 },
+        { "I, Robot", 2004 }
+    };
+
+    input_stage(movies);
+    reorder_stage(movies);
+
+    return 0;
+}
+
+// UI prompt for user to enter all new movie records (name and production year).
+void input_stage(list<Movie>& movies)
 {
     string input = "";
     int year = 0;
@@ -17,7 +40,7 @@ void input_stage(vector<Movie>& movies)
         cout << "\t(" << movie.getYear() << ") " << movie.getName() << endl;
     }
 
-    do
+    while (true)
     {
         cout << "Enter new movie name (or \"done\" to move on): ";
         getline(cin, input);
@@ -28,19 +51,22 @@ void input_stage(vector<Movie>& movies)
         cin.clear();
         cin.ignore(10000, '\n');
         movies.push_back(Movie(input, year));
-    } while (true);
+    }
 }
 
-void reorder_stage(vector<Movie>& movies)
+// UI prompt for user to reorder any movie.
+// User select a movie based on existing rank, the movie will then be reordered to the new rank.
+void reorder_stage(list<Movie>& movies)
 {
+    list<Movie>::iterator itr;
     Movie temp;
-    int choice, newRank;
-    do
+    int choice, newRank, currRank;
+    while (true)
     {
         cout << "==================== Movie Rank Chart ====================" << endl;
-        for (int i = 0; i < movies.size(); i++)
+        for (itr = begin(movies), currRank = 1; itr != end(movies); ++itr, currRank++)
         {
-            cout << "Rank " << i + 1 << ": (" << movies[i].getYear() << ") " << movies[i].getName() << endl;
+            cout << "Rank " << currRank << ": (" << itr->getYear() << ") " << itr->getName() << endl;
         }
 
         // Get target movie
@@ -68,29 +94,10 @@ void reorder_stage(vector<Movie>& movies)
         cin.ignore(10000, '\n');
 
         // Reorder movie
-        temp = movies[choice - 1];
-        movies.erase(movies.begin() + (choice - 1));
-        movies.insert(movies.begin() + (newRank - 1), temp);
-    } while (true);
-}
-
-int main()
-{
-    cout << "Hello Assignment 4 P1 - Movie Ranking" << endl;
-    cout << "[User is expected to provide proper inputs, explicit input check is out of scope.]" << endl;
-
-    vector<Movie> movies
-    {
-        { "Star Wars Episode IV - A New Hope", 1977 },
-        { "The Terminator", 1984 },
-        { "Jurassic Park", 1993 },
-        { "Titanic", 1997 },
-        { "The Matrix", 1999 },
-        { "I, Robot", 2004 }
-    };
-
-    input_stage(movies);
-    reorder_stage(movies);
-
-    return 0;
+        for (itr = begin(movies), currRank = 1; currRank < choice; currRank++, ++itr);
+        temp = *itr;
+        movies.erase(itr);
+        for (itr = begin(movies), currRank = 1; currRank < newRank; currRank++, ++itr);
+        movies.insert(itr, temp);
+    }
 }

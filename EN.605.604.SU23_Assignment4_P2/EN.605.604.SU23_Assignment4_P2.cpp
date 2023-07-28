@@ -1,4 +1,4 @@
-﻿// EN.605.604.SU23_Assignment4.cpp : Defines the entry point for the application.
+﻿// EN.605.604.SU23_Assignment4_P2.cpp
 
 #include <set>
 #include "State.h"
@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello Assignment 4 P2 - State and Capital City" << endl;
+    cout << "Assignment 4 P2 - State and Capital City" << endl;
 
     set<unique_ptr<State>> states;
     set<unique_ptr<State>>::iterator itr;

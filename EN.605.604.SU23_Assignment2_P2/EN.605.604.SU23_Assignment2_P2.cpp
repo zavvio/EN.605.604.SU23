@@ -1,4 +1,4 @@
-﻿// EN.605.604.SU23_Assignment2_P2.cpp : Defines the entry point for the application.
+﻿// EN.605.604.SU23_Assignment2_P2.cpp
 
 #include "UserInterface.h"
 
