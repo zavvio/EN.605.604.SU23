@@ -1,6 +1,7 @@
 #pragma once
 #include "DevUtil.h"
 
+// A passenger records its time in each phase of the airport securty system
 class Passenger
 {
 public:
@@ -13,7 +14,7 @@ public:
     double getStation2Time() const;
 
 private:
-    unsigned stage { 0 };
+    unsigned stage { 0 }; // guides logTime() to one of the following records
     double queue1EntryTime  { std::nan("") };
     double queue1ExitTime   { std::nan("") };
     double station1ExitTime { std::nan("") };

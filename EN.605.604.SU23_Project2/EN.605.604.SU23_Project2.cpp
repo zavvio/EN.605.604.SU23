@@ -1,31 +1,41 @@
 // EN.605.604.SU23_Project2.cpp
 
-//#include <cmath>
-//#include <cstdlib>
 #include <ctime>
 #include <numeric>
 #include <queue>
 #include <vector>
 #include "DevUtil.h"
-//#include "Passenger.h"
-//#include "PassengerCheckPointListener.h"
-//#include "RandomEventTimeGenerator.h"
-//#include "SimulatedTimePublisher.h"
 #include "AirportSecuritySystemSimulator.h"
 
 using namespace std;
 
-//vector<double> generateEvents(double rateParameter, double duration)
-//{
-//    double currTime = 0.0;
-//    
-//}
+#ifdef UNIT_TEST
+#include "SimulatedTimePublisher.h"
+void testTimer();
+void testPassenger();
+void testRandomEventTimeGenerator();
+#endif
+
+int main()
+{
+    cout << fixed << setprecision(2);
+	cout << "########## Project 2 - Airport Security System (Discrete Event) Simulation ##########" << endl;
+
+    AirportSecuritySystemSimulator simulation(5);
+    simulation.run();
+    
+#ifdef UNIT_TEST
+    testTimer();
+    testPassenger();
+    testRandomEventTimeGenerator();
+#endif
+}
 
 #ifdef UNIT_TEST
 void testTimer()
 {
     cout << endl << "[Unittest] Timer ==============================" << endl;
-    Timer timer;
+    SimulatedTimePublisher timer;
     cout << "Current time = " << timer.getCurrentTime() << endl;
     timer.incrementTime();
     timer.incrementTime();
@@ -73,30 +83,3 @@ void testRandomEventTimeGenerator()
 #endif
 }
 #endif
-
-//class CheckPoint
-//{
-//public:
-//    void average()
-//    {
-//        vector<double> v;
-//        double average = accumulate(v.begin(), v.end(), 0.0) / v.size();
-//    }
-//private:
-//    queue<Passenger> passengers;
-//};
-
-int main()
-{
-    cout << fixed << setprecision(2);
-	cout << "Project 2." << endl;
-
-    AirportSecuritySystemSimulator simulation(5);
-    simulation.run();
-    
-#ifdef UNIT_TEST
-    testTimer();
-    testPassenger();
-    testRandomEventTimeGenerator();
-#endif
-}

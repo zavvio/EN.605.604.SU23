@@ -4,9 +4,7 @@ PassengerCheckPointListener::PassengerCheckPointListener(std::string name, doubl
     std::shared_ptr<PassengerCheckPointListener> upstream, double startHour, double stopHour) :
     listenerName{ name }, eventTimeGenerator{ eventLambda }, upstream{ upstream },
     dailyOperatingStartHour{ startHour }, dailyOperatingStopHour{ stopHour }
-{
-    //
-}
+{}
 
 PassengerCheckPointListener::~PassengerCheckPointListener()
 {
@@ -20,38 +18,41 @@ void PassengerCheckPointListener::update(double currTime)
 #ifdef DEBUG_TRACE
     //std::cout << "[Listener " << listenerName << "] currTime = " << currTime << std::endl;
 #endif
+    // only take action after each "processing time" interval
     if (currTime >= availableAfterTime)
     {
         if (currPassenger != nullptr)
         {
             if (isOrigin())
-            {
+            { // time when passenger first enter credentials queue
                 currPassenger->logTime(currTime);
             }
+            // current passenger is done being processed, move to ready queue for downstream
             enqueue(currPassenger);
-            //std::cout << "currPassenger = " << (currPassenger == nullptr ? "nullptr" : "not null") << std::endl;
         }
 
+        // take action only during operational period
         if (isCheckPointOpen(currTime))
         {
             if (isOrigin())
-            {
+            { // create a new passenger
                 currPassenger = std::make_unique<Passenger>();
-                updateAvailableAfterTime(currTime);
+                updateAvailableAfterTime(currTime); // new random processing time
             }
             else if (upstream->isPassengerAvailable())
-            {
+            { // retrieve a passenger from upstream check point
                 currPassenger = upstream->dequeue();
                 currPassenger->logTime(currTime);
 #ifdef DEBUG_TRACE
                 std::cout << " at " << currTime << "." << std::endl;
 #endif
-                updateAvailableAfterTime(currTime);
+                updateAvailableAfterTime(currTime); // new random processing time
             }
         }
     }
 }
 
+// Let downstream check point knows if there is passenger waiting to move on
 bool PassengerCheckPointListener::isPassengerAvailable() const
 {
     return !passedPassengers.empty();
@@ -67,6 +68,7 @@ std::unique_ptr<Passenger> PassengerCheckPointListener::dequeue()
     return passenger;
 }
 
+// Origin check point is responsible of creating new passenger object instance
 bool PassengerCheckPointListener::isOrigin() const
 {
     return (upstream == nullptr);
@@ -81,12 +83,13 @@ bool PassengerCheckPointListener::isCheckPointOpen(double currTime) const
     return (timeInDay >= dailyOperatingStartSecond && timeInDay < dailyOperatingStopSecond);
 }
 
-
+// Put a passenger to the (downstream) ready queue
 void PassengerCheckPointListener::enqueue(std::unique_ptr<Passenger>& passenger)
 {
     passedPassengers.push(std::move(passenger));
 }
 
+// Set next processing completion time
 void PassengerCheckPointListener::updateAvailableAfterTime(double currTime)
 {
     double nextTime = eventTimeGenerator.getNextEventTime();

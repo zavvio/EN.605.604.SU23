@@ -10,6 +10,7 @@ ProcessInfoListener::~ProcessInfoListener()
 void ProcessInfoListener::update(double currTime)
 {
     std::unique_ptr<Passenger> passenger;
+    // upstreams are the four scanning stations
     for (auto& upstream : upstreams)
     {
         while (upstream->isPassengerAvailable())

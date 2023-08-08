@@ -16,5 +16,7 @@ void SimulatedTimePublisher::incrementTime(double increment)
 {
     notify(simulatedTime);
     simulatedTime += increment;
-    //std::cout << "time = " << simulatedTime << std::endl;
+#ifdef DEBUG_TRACE
+    std::cout << "time = " << simulatedTime << std::endl;
+#endif
 }

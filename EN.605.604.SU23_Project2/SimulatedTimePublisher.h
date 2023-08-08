@@ -10,5 +10,5 @@ public:
     double getCurrentTime() const;
     void incrementTime(double increment = 1.0);
 private:
-    double simulatedTime{ 0.0 };
+    double simulatedTime{ 0.0 }; // 1 unit is 1 second
 };
